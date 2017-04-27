@@ -1,0 +1,60 @@
+---
+title: "deebee"
+author: "Prabhuram Venkatesan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+deebee provides set of functions that allows to execute SQL queries in:
+
+- Oracle using RJDBC drivers and 
+- other databases using ODBC drivers
+
+Functions are relatively use to use after the package is installed. Some of the code result in the following chunks can be listed with errors as this was executed in a development environment.
+
+## Oracle
+
+The most basic command is to execute a SQL query using the `OraRun_` function. This functions takes the SQL along with the connection information to execute a query and returns the resultset in a tibble.
+
+```{r}
+OraRun_("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", host_name = "localhost", port = "1521", sid = "xe", user_name = "tuningusr", pwd = "ganges")
+```
+
+To avoid passing repetitive connection information, another function `OraRun` can be used. The above command can be executed as: 
+
+```{r}
+#create a connection string with prefix as "ora_connstr_"
+ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "tuningusr", pwd = "ganges")
+
+#call OraRun once the connection string is defined
+OraRun("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "stg")
+
+```
+
+## ODBC
+
+`ODBCRun` is implemented to use a DSN to establish a connection to execute a query.
+
+`
+ODBCRun("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "LOCAL_XE")
+`
+
+
+## Comparing Query results
+
+`CompareOraDataset` helps in comparing resultsets from two environments. 
+
+`
+#create a connection string with prefix as "ora_connstr_"  
+ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "tuningusr", pwd = "ganges")  
+ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sys", pwd = "ganges")  
+CompareOraDataset("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "dev", "stg")  
+`
+
+***
+
+

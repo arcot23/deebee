@@ -1,6 +1,6 @@
 require(rJava)
 require(RJDBC)
-
+require(dplyr)
 
 #' @title Runs a SQL query in Oracle
 #' @description Runs a SQL query in Oracle and returns a resultset.
@@ -46,17 +46,17 @@ OraRun_ <-
 #' @title Runs a SQL query in preferred environment.
 #' @description Runs a SQL query in Oracle and returns a resultset.
 #' @param query SQL Query to execute.
-#' @param env Environment name as string. The function will parse the environment name to its equivalent connection string stored under ora.connstr.[env]. This connection must be defined in advance that must contain five variables host_name, port, sid, user_name, pwd. Defaults to environment dev.
-#' E.g., ora.connstr.dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "scott", pwd = "tiger")
+#' @param env Environment name as string. The function will parse the environment name to its equivalent connection string stored under ora_connstr_[env]. This connection must be defined in advance that must contain five variables host_name, port, sid, user_name, pwd. Defaults to environment dev.
+#' E.g., ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "scott", pwd = "tiger")
 #'
 #' @return SQL resultset as a tibble
 #' @examples
-#' ora.connstr.stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "scott", pwd = "tiger")
+#' ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "scott", pwd = "tiger")
 #' OraRun("SELECT * FROM ALL_TABLES", "stg")
 #'
 OraRun <- function(query, env = "dev")
 {
-  eval(parse(text = paste0("conn_str = ora.connstr.", env)))
+  eval(parse(text = paste0("conn_str = ora_connstr_", env)))
   OraRun_(query, conn_str["host_name"], conn_str["port"], conn_str["sid"], conn_str["user_name"], conn_str["pwd"])
 }
 
@@ -71,7 +71,7 @@ OraRun <- function(query, env = "dev")
 #' @examples
 #' OraTableDesc("EMP", "dev")
 OraTableDesc <- function(db_table, env = "dev") {
-  OraRun(sprintf("SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = '%s'", db_table), env) %>%
+  OraRun(sprintf("SELECT * FROM ALL_TAB_COLS WHERE TABLE_NAME = '%s'", stringr::str_to_upper(db_table)), env) %>%
     mutate(
       table_column = sprintf(
         "%s.%s[%s(%s,%s)] %s",
@@ -80,7 +80,7 @@ OraTableDesc <- function(db_table, env = "dev") {
         DATA_TYPE,
         DATA_PRECISION,
         DATA_SCALE,
-        if_else(NULLABLE == "Y", 'NULL', 'NO NULL')
+        if_else(NULLABLE == "Y", 'NULL', 'NONULL')
       )
     ) %>%
     select(table_column)
