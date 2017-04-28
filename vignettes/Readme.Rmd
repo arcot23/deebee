@@ -9,26 +9,28 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-deebee provides set of functions that allows to execute SQL queries in:
+## About `deebee`
 
-- Oracle using RJDBC drivers and 
-- other databases using ODBC drivers
+`deebee` provides set of functions that allows to execute SQL queries in:
 
-Functions are relatively use to use after the package is installed. Some of the code result in the following chunks can be listed with errors as this was executed in a development environment.
+1. Oracle using RJDBC drivers and 
+2. other databases using ODBC drivers
+
+Functions are relatively easy to use after the package is installed. Some of the code result in the following chunks can be listed with errors as this was executed in a development environment.
 
 ## Oracle
 
 The most basic command is to execute a SQL query using the `OraRun_` function. This functions takes the SQL along with the connection information to execute a query and returns the resultset in a tibble.
 
 ```{r}
-OraRun_("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", host_name = "localhost", port = "1521", sid = "xe", user_name = "tuningusr", pwd = "ganges")
+OraRun_("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")
 ```
 
 To avoid passing repetitive connection information, another function `OraRun` can be used. The above command can be executed as: 
 
 ```{r}
 #create a connection string with prefix as "ora_connstr_"
-ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "tuningusr", pwd = "ganges")
+ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")
 
 #call OraRun once the connection string is defined
 OraRun("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "stg")
@@ -50,8 +52,8 @@ ODBCRun("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "LOCAL_XE")
 
 `
 #create a connection string with prefix as "ora_connstr_"  
-ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "tuningusr", pwd = "ganges")  
-ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sys", pwd = "ganges")  
+ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")  
+ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sys", pwd = "tiger")  
 CompareOraDataset("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "dev", "stg")  
 `
 
