@@ -12,10 +12,18 @@ CompareOraDataset <-
            env1,
            env2,
            inXbutNotY = T) {
-    if (inXbutNotY)
-      dplyr::setdiff(OraRun(query, env1),
-                     OraRun(query, env2))
-      else
-        dplyr::setdiff(OraRun(query, env2),
-                       OraRun(query, env1))
+    x <- OraRun(query, env1)    
+    y <- OraRun(query, env2)        
+    if (length(x) != length(y))      
+      warning("Column count between x and y are not the same")    
+    if (!identical(colnames(x), colnames(y)))      
+      warning("Column names between x and y are not the same")    
+    if (!identical(sapply(x, class), sapply(y, class)))      
+      warning("Column types between x and y are not the same")        
+    x$x = T    
+    y$y = T    
+    z <- merge(x, y, all = T) %>%      
+      as_data_frame()        
+    warning(sprintf("x: %s, y: %s, xuy: %s, x-y: %s, y-x: %s;", nrow(x), nrow(y), nrow(z), nrow(z[z$y != T, ]), nrow(z[z$x != T, ])))        
+    z
   }
