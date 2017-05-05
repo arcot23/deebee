@@ -1,5 +1,5 @@
 Package: deebee
-Title: Establish Oracle or ODBC 
+Title: Database connectivity made simple
 Version: 0.0.1.0000
 Authors@R: person("Prabhuram", "Venkatesan", email = "prabhuram@prabhuram.com", role = c("aut", "cre"))
 Description: Execute SQL statements in Oracle or through ODBC DSNs

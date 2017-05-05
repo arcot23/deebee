@@ -25,7 +25,7 @@ CompareOraDataset <-
       as_data_frame()       
 
     cat(sprintf(
-      "# x: %s, y: %s, xuy: %s, x-y: %s, y-x: %s;",
+      "# x: %s, y: %s, xUy: %s, x-y: %s, y-x: %s;",
       nrow(x),
       nrow(y),
       nrow(z),
