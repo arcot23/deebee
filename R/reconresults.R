@@ -25,12 +25,12 @@ ReconResults <-
       as_data_frame()
 
     cat(sprintf(
-      "# x : %s, y:%s, x \U22C3 y : %s, x - y : %s, y - x : %s\r\n",
-      nrow(x),
-      nrow(y),
-      nrow(z),
-      nrow(z[z$y != T, ]),
-      nrow(z[z$x != T, ])
+      "# %s: %s \U00D7 %s, %s: %s \U00D7 %s, %s \U22C3 %s: %s \U00D7 %s, %s - %s: %s \U00D7 %s, %s - %s: %s \U00D7 %s\r\n",
+      env1, nrow(x), length(x),
+      env2, nrow(y), length(x),
+      env1, env2, nrow(z), length(z),
+      env1, env2, nrow(z[z$y != T,]), length(z[z$y != T,]),
+      env1, env2, nrow(z[z$x != T,]), length(z[z$x != T,])
     ))
     z
   }
