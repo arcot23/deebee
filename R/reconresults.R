@@ -29,6 +29,7 @@ ReconResults <-
     cat(
       sprintf(
         "# x: %s \U00D7 %s, y: %s \U00D7 %s, x \U2229 y : %s \U00D7 %s, x \U22C3 y: %s \U00D7 %s, x \U2212 y: %s \U00D7 %s, y \U2212 x: %s \U00D7 %s\r\n",
+
         nrow(x),
         length(x),
         nrow(y),
