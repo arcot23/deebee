@@ -12,7 +12,7 @@ require(dplyr)
 #' @param pwd Password for the connection in plain text.
 #' @return SQL resultset in a tibble
 #' @examples
-#' OraRun_("SELECT * FROM ALL_TABLES", "act", 1580, xe, "scott", "tiger")
+#' OraRun_("SELECT * FROM ALL_TABLES", "localhost", 1521, xe, "sc", "tiger")
 #'
 OraRun_ <-
   function (query,
@@ -21,9 +21,11 @@ OraRun_ <-
             sid = "xe",
             user_name,
             pwd) {
+
     # requires libary RJDBC
     jdbcDriver <-
-      RJDBC::JDBC(driverClass = "oracle.jdbc.OracleDriver", classPath = "C:\\oraclexe\\app\\oracle\\product\\11.2.0\\server\\jdbc\\lib\\ojdbc5.jar")
+      RJDBC::JDBC(driverClass = "oracle.jdbc.OracleDriver", classPath =  Sys.getenv("ojdbcfile"))
+
 
     # open connection
     jdbcConnection <-
@@ -47,12 +49,12 @@ OraRun_ <-
 #' @description Runs a SQL query in Oracle and returns a resultset.
 #' @param query SQL Query to execute.
 #' @param env Environment name as string. The function will parse the environment name to its equivalent connection string stored under ora_connstr_[env]. This connection must be defined in advance that must contain five variables host_name, port, sid, user_name, pwd. Defaults to environment dev.
-#' E.g., ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "scott", pwd = "tiger")
+#' E.g., ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")
 #'
 #' @return SQL resultset as a tibble
 #' @examples
-#' ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "scott", pwd = "tiger")
-#' OraRun("SELECT * FROM ALL_TABLES", "stg")
+#' ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")
+#' OraRun("SELECT * FROM ALL_TABLES", "dev")
 #'
 OraRun <- function(query, env = "dev")
 {

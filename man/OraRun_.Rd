@@ -26,6 +26,6 @@ SQL resultset in a tibble
 Runs a SQL query in Oracle and returns a resultset.
 }
 \examples{
-OraRun_("SELECT * FROM ALL_TABLES", "act", 1580, xe, "scott", "tiger")
+OraRun_("SELECT * FROM ALL_TABLES", "localhost", 1521, xe, "sc", "tiger")
 
 }

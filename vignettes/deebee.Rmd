@@ -48,12 +48,14 @@ ODBCRun("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "LOCAL_XE")
 
 `CompareOraDataset` helps in comparing resultsets from two environments. 
 
-`
+```{r}
 #create a connection string with prefix as "ora_connstr_"  
-ora_connstr_stg <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")  
-ora_connstr_dev <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sys", pwd = "tiger")  
-CompareOraDataset("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "dev", "stg")  
-`
+ora_connstr_stg1 <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")  
+ora_connstr_stg2 <- list(host_name = "localhost", port = "1521", sid = "xe", user_name = "sc", pwd = "tiger")  
+ReconResults("SELECT OWNER, TABLE_NAME, TABLESPACE_NAME FROM ALL_TABLES", "stg1", "stg2")  
+
+```
+
 
 ***
 
