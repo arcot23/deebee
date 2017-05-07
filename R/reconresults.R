@@ -19,36 +19,28 @@ ReconResults <-
     if (!identical(sapply(x, class), sapply(y, class)))
       warning("Column types between x and y are not the same")
 
-    x$x = T
-    y$y = T
-    z <- merge(x, y, all = T) %>%
+    lhs <- x
+    rhs <- y
+    lhs$x <- T
+    rhs$y <- T
+    z <- merge(lhs, rhs, all = T) %>%
       as_data_frame()
 
     cat(
       sprintf(
-        "# %s: %s \U00D7 %s, %s: %s \U00D7 %s, x \U2229 y : %s \U00D7 %s, %s \U22C3 %s: %s \U00D7 %s, %s \U2212 %s: %s \U00D7 %s, %s \U2212 %s: %s \U00D7 %s\r\n",
-        env1,
+        "# x: %s \U00D7 %s, y: %s \U00D7 %s, x \U2229 y : %s \U00D7 %s, x \U22C3 y: %s \U00D7 %s, x \U2212 y: %s \U00D7 %s, y \U2212 x: %s \U00D7 %s\r\n",
         nrow(x),
         length(x),
-        env2,
         nrow(y),
         length(x),
-        env1,
-        env2,
         nrow(dplyr::intersect(x, y)),
         length(dplyr::intersect(x, y)),
-        env1,
-        env2,
         nrow(z),
-        length(z),
-        env1,
-        env2,
+        length(z) - 2,
         nrow(z[z$y != T, ]),
-        length(z[z$y != T, ]),
-        env1,
-        env2,
+        length(z[z$y != T, ]) - 2,
         nrow(z[z$x != T, ]),
-        length(z[z$x != T, ])
+        length(z[z$x != T, ]) - 2
       )
     )
     z
