@@ -21,8 +21,8 @@ ReconResults <-
 
     lhs <- x
     rhs <- y
-    lhs$x <- T
-    rhs$y <- T
+    lhs[env1] <- T
+    rhs[env2] <- T
     z <- merge(lhs, rhs, all = T) %>%
       as_data_frame()
 
@@ -45,12 +45,12 @@ ReconResults <-
         length(z) - 2,
         env1,
         env2,
-        nrow(z[z$y != T, ]),
-        length(z[z$y != T, ]) - 2,
+        nrow(z[z[env2] != T, ]),
+        length(z[z[env2] != T, ]) - 2,
         env2,
         env1,
-        nrow(z[z$x != T, ]),
-        length(z[z$x != T, ]) - 2
+        nrow(z[z[env1] != T, ]),
+        length(z[z[env1] != T, ]) - 2
       )
     )
     z
